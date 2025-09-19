@@ -1,0 +1,19 @@
+// Prisma schema para autenticação Google
+// Salve como schema.prisma em src/server/prisma/
+
+datasource db {
+    provider = "sqlite"
+    url      = "file:./dev.db"
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+model User {
+    id        String   @id @default(uuid())
+    email     String   @unique
+    name      String?
+    googleId  String   @unique
+    createdAt DateTime @default(now())
+}

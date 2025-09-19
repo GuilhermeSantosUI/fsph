@@ -1,7 +1,10 @@
 import fastifyCors from '@fastify/cors';
 import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
+import dotenv from 'dotenv';
 import { fastify } from 'fastify';
+import { registerRoutes } from './routes';
+dotenv.config();
 
 const app = fastify();
 
@@ -21,8 +24,10 @@ app.register(fastifySwaggerUi, {
 });
 
 app.get('/', async () => {
-  return { message: 'Hello, world!' };
+  return { message: 'Google oAuth SSR Demo!' };
 });
+
+registerRoutes(app);
 
 app.listen({ port: 3000 }, (err, address) => {
   if (err) {
