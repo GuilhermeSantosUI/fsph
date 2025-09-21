@@ -23,11 +23,6 @@ export default function Onboarding2Screen() {
     router.push('/loading');
   };
 
-  const handleViewFirst = () => {
-    // Implementar visualização primeiro
-    console.log('Visualizar primeiro');
-  };
-
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
@@ -62,12 +57,6 @@ export default function Onboarding2Screen() {
         
         <TouchableOpacity style={styles.secondaryButton} onPress={handleLogin}>
           <Text style={styles.secondaryButtonText}>Já tenho uma conta</Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity style={styles.linkButton} onPress={handleViewFirst}>
-          <Text style={styles.linkText}>
-            Quer conhecer primeiro? <Text style={styles.linkHighlight}>Visualizar</Text>
-          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -137,19 +126,5 @@ const styles = StyleSheet.create({
     color: '#C53030',
     fontSize: 18,
     fontWeight: '600',
-  },
-  linkButton: {
-    paddingVertical: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  linkText: {
-    fontSize: 14,
-    color: '#718096',
-    textAlign: 'center',
-  },
-  linkHighlight: {
-    color: '#C53030',
-    textDecorationLine: 'underline',
   },
 });

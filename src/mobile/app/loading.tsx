@@ -14,9 +14,9 @@ export default function LoadingScreen() {
   const router = useRouter();
 
   useEffect(() => {
-    // Simula carregamento por 3 segundos e depois navega para a tela principal
+    // Simula carregamento por 3 segundos e depois navega para a tela de login
     const timer = setTimeout(() => {
-      router.replace('/(tabs)/main');
+      router.replace('/onboarding/auth');
     }, 3000);
 
     return () => clearTimeout(timer);
