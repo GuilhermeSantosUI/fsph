@@ -16,7 +16,7 @@ export default function Onboarding1Screen() {
   const router = useRouter();
 
   const handleNext = () => {
-    router.push('/onboarding2');
+    router.push('/schedule');
   };
 
   return (
