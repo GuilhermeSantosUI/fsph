@@ -7,12 +7,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Register() {
   const isPresented = router.canGoBack();
 
   return (
-    <View className="flex-1 bg-white px-6 py-6">
+    <SafeAreaView className="flex-1 bg-white px-6">
       <StatusBar
         barStyle={Platform.OS === 'ios' ? 'dark-content' : 'light-content'}
       />
@@ -26,13 +27,20 @@ export default function Register() {
             <CaretLeftIcon size={20} weight="bold" />
           </TouchableOpacity>
         )}
+
         <Text className="flex-1 text-center text-lg font-medium text-black">
           Criar Conta
         </Text>
-        <View className="w-10" />
+
+        <TouchableOpacity
+          onPress={() => router.back()}
+          className="px-2 py-2 justify-center items-center opacity-0"
+        >
+          <CaretLeftIcon size={20} weight="bold" />
+        </TouchableOpacity>
       </View>
 
       <View className="flex-1 p-4"></View>
-    </View>
+    </SafeAreaView>
   );
 }

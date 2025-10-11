@@ -1,23 +1,34 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { router } from 'expo-router';
+import { CaretLeftIcon } from 'phosphor-react-native';
 
 export default function HomeScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Home Screen</Text>
-    </View>
+    <SafeAreaView className="flex-1 bg-white px-6">
+      <View className="flex-row items-center">
+        <TouchableOpacity
+          onPress={() => router.back()}
+          className="px-2 py-2 justify-center items-center"
+        >
+          <CaretLeftIcon size={20} weight="bold" />
+        </TouchableOpacity>
+
+        <Text className="flex-1 text-center text-lg font-medium text-black">
+          Login
+        </Text>
+
+        <TouchableOpacity
+          onPress={() => router.back()}
+          className="px-2 py-2 justify-center items-center opacity-0"
+        >
+          <CaretLeftIcon size={20} weight="bold" />
+        </TouchableOpacity>
+      </View>
+
+      <Text>Tela de Home</Text>
+    </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#ffffff',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  text: {
-    fontSize: 18,
-    color: '#2D3748',
-  },
-});

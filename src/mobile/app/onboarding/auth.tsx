@@ -1,20 +1,21 @@
 import { router } from 'expo-router';
 import { CaretLeftIcon } from 'phosphor-react-native';
 import {
+  Image,
   Platform,
   StatusBar,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
-  TextInput,
-  Image,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Auth() {
   const isPresented = router.canGoBack();
 
   return (
-    <View className="flex-1 bg-white px-6 py-6">
+    <SafeAreaView className="flex-1 bg-white px-6">
       <StatusBar
         barStyle={Platform.OS === 'ios' ? 'dark-content' : 'light-content'}
       />
@@ -28,14 +29,20 @@ export default function Auth() {
             <CaretLeftIcon size={20} weight="bold" />
           </TouchableOpacity>
         )}
+
         <Text className="flex-1 text-center text-lg font-medium text-black">
           Login
         </Text>
-        <View className="w-10" />
+
+        <TouchableOpacity
+          onPress={() => router.back()}
+          className="px-2 py-2 justify-center items-center opacity-0"
+        >
+          <CaretLeftIcon size={20} weight="bold" />
+        </TouchableOpacity>
       </View>
 
-      <View className="flex-1 px-6 pt-8">
-        {/* Campo Login */}
+      <View className="flex-1 pt-8">
         <View className="mb-4">
           <Text className="text-black text-base mb-2 font-medium">Login:</Text>
           <TextInput
@@ -45,7 +52,6 @@ export default function Auth() {
           />
         </View>
 
-        {/* Campo Senha */}
         <View className="mb-6">
           <Text className="text-black text-base mb-2 font-medium">Senha:</Text>
           <TextInput
@@ -56,33 +62,49 @@ export default function Auth() {
           />
         </View>
 
-        {/* Botão Login */}
-        <TouchableOpacity className="bg-red-500 rounded-lg py-4 mb-6">
-          <Text className="text-white text-center text-lg font-semibold">Login</Text>
+        <TouchableOpacity
+          className="bg-red-500 rounded-lg py-4 mb-6"
+          onPress={() => router.push('/(tabs)')}
+        >
+          <Text className="text-white text-center text-lg font-semibold">
+            Login
+          </Text>
         </TouchableOpacity>
 
-        {/* Esqueci minha Senha */}
-        <TouchableOpacity className="bg-white border border-gray-200 rounded-lg py-4 mb-8">
-          <Text className="text-red-500 text-center text-base">Esqueci minha Senha</Text>
+        <TouchableOpacity
+          className="bg-white border border-gray-200 rounded-lg py-4 mb-8"
+          onPress={() => {
+            router.push('/onboarding/password');
+          }}
+        >
+          <Text className="text-red-500 text-center text-base">
+            Esqueci minha Senha
+          </Text>
         </TouchableOpacity>
 
-        {/* Botão Google */}
         <TouchableOpacity className="bg-white border border-gray-200 rounded-lg py-4 mb-6 flex-row justify-center items-center">
-          <Image 
-            source={require('../../assets/images/icon-google.png')} 
+          <Image
+            source={require('../../assets/images/icon-google.png')}
             className="w-5 h-5 mr-3"
             resizeMode="contain"
           />
-          <Text className="text-gray-700 text-base">Continuar com o Google</Text>
+
+          <Text className="text-gray-700 text-base">
+            Continuar com o Google
+          </Text>
         </TouchableOpacity>
 
-        {/* Link Registre-se */}
         <View className="items-center">
           <Text className="text-gray-600 text-base">
-            Não possui conta? <Text className="text-red-500 underline">Registre-se</Text>
+            Não possui conta?{' '}
+            <TouchableOpacity
+              onPress={() => router.push('/onboarding/register')}
+            >
+              <Text className="text-red-500 underline">Registre-se</Text>
+            </TouchableOpacity>
           </Text>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
