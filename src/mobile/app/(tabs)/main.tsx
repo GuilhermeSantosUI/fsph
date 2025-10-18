@@ -17,7 +17,7 @@ export default function MainScreen() {
         </TouchableOpacity>
 
         <Text className="flex-1 text-center text-lg font-medium text-black">
-          Login
+          home
         </Text>
 
         <TouchableOpacity
