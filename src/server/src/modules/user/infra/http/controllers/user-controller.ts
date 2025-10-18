@@ -1,6 +1,6 @@
+import { UserRepository } from '@modules/user/repositories/user-repository';
+import { AuthService } from '@modules/user/services/auth-service';
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { UserRepository } from '../../../repositories/user-repository';
-import { AuthService } from '../../../services/auth-service';
 
 const userRepository = new UserRepository();
 const authService = new AuthService(userRepository);

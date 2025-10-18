@@ -7,6 +7,12 @@
     "lib": ["es2024", "ESNext.Array", "ESNext.Collection", "ESNext.Iterator"],
     "module": "nodenext",
     "target": "es2022",
+    "baseUrl": "./",
+    "paths": {
+      "@config/*": ["./src/config/*"],
+      "@modules/*": ["./src/modules/*"],
+      "@shared/*": ["./src/shared/*"]
+    },
 
     "strict": true,
     "esModuleInterop": true,

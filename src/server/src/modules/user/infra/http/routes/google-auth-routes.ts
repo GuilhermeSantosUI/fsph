@@ -1,6 +1,6 @@
 import fastifyOauth2 from '@fastify/oauth2';
 import { FastifyInstance } from 'fastify';
-import { googleAuthHandler } from '../../../../user/infra/http/controllers/user-controller';
+import { googleAuthHandler } from '../controllers/user-controller';
 
 export async function googleAuthRoutes(app: FastifyInstance) {
   app.register(fastifyOauth2, {
