@@ -7,9 +7,8 @@ export default function Schedule() {
   const router = useRouter();
 
   const handleNext = () => {
-    router.push('/schedule/segunda');
+    router.push('/onboarding1');
   }
-  
 
   return (
     <View style={styles.container}>
@@ -21,7 +20,7 @@ export default function Schedule() {
 
       {/* Pergunta + Opções (agora dentro de content para centralizar) */}
       <View style={styles.content}>
-        <Text style={styles.question}>Você tem mais de 50kg?</Text>
+        <Text style={styles.question}>Sua última doação foi há mais de 60 dias (homens) ou 90 dias (mulheres)?</Text>
 
         <View style={styles.containerOptions}>
           <TouchableOpacity style={styles.sim} onPress = {handleNext}>
