@@ -7,15 +7,20 @@ export default function Schedule() {
   const router = useRouter();
 
   const handleNext = () => {
-    router.push('/schedule/segunda');
-  }
-  
+    router.push("/schedule/segunda");
+  };
+
+  const handleBack = () => {
+    router.back();
+  };
 
   return (
     <View style={styles.container}>
       {/* Cabeçalho */}
       <View style={styles.header}>
-        <Ionicons name="chevron-back" size={22} color="#000" />
+        <TouchableOpacity onPress={handleBack}>
+          <Ionicons name="chevron-back" size={22} color="#000" />
+        </TouchableOpacity>
         <Text style={styles.headerTitle}>Pré-triagem</Text>
       </View>
 
@@ -24,20 +29,20 @@ export default function Schedule() {
         <Text style={styles.question}>Você tem mais de 50kg?</Text>
 
         <View style={styles.containerOptions}>
-          <TouchableOpacity style={styles.sim} onPress = {handleNext}>
-          <Text style={styles.cancelText}>Sim</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.sim} onPress={handleNext}>
+            <Text style={styles.optionText}>Sim</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity style={styles.nao} onPress = {handleNext}>
-          <Text style={styles.cancelText}>Não</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.nao} onPress={handleNext}>
+            <Text style={styles.optionText}>Não</Text>
+          </TouchableOpacity>
         </View>
       </View>
 
       {/* Fundo curvado */}
       <View style={styles.bottomArea}>
         <View style={styles.redBackground} />
-        <TouchableOpacity style={styles.cancelButton} onPress = {handleNext}>
+        <TouchableOpacity style={styles.cancelButton} onPress={handleNext}>
           <Text style={styles.cancelText}>Cancelar</Text>
         </TouchableOpacity>
       </View>
@@ -160,6 +165,11 @@ const styles = StyleSheet.create({
   },
   cancelText: {
     color: "#B71C2C",
+    fontWeight: "600",
+    fontSize: 16,
+  },
+  optionText: {
+    color: "#000",
     fontWeight: "600",
     fontSize: 16,
   },

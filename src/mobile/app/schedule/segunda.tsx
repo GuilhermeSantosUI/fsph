@@ -7,14 +7,20 @@ export default function Schedule() {
   const router = useRouter();
 
   const handleNext = () => {
-    router.push('/onboarding1');
-  }
+    router.push("/onboarding1");
+  };
+
+  const handleBack = () => {
+    router.back();
+  };
 
   return (
     <View style={styles.container}>
       {/* Cabeçalho */}
       <View style={styles.header}>
-        <Ionicons name="chevron-back" size={22} color="#000" />
+        <TouchableOpacity onPress={handleBack}>
+          <Ionicons name="chevron-back" size={22} color="#000" />
+        </TouchableOpacity>
         <Text style={styles.headerTitle}>Pré-triagem</Text>
       </View>
 
@@ -23,20 +29,20 @@ export default function Schedule() {
         <Text style={styles.question}>Sua última doação foi há mais de 60 dias (homens) ou 90 dias (mulheres)?</Text>
 
         <View style={styles.containerOptions}>
-          <TouchableOpacity style={styles.sim} onPress = {handleNext}>
-          <Text style={styles.cancelText}>Sim</Text>
-        </TouchableOpacity>
+            <TouchableOpacity style={styles.sim}>
+            <Text style={styles.optionText}>Sim</Text>
+            </TouchableOpacity>
 
-        <TouchableOpacity style={styles.nao} onPress = {handleNext}>
-          <Text style={styles.cancelText}>Não</Text>
-        </TouchableOpacity>
+            <TouchableOpacity style={styles.nao}>
+            <Text style={styles.optionText}>Não</Text>
+          </TouchableOpacity>
         </View>
       </View>
 
       {/* Fundo curvado */}
       <View style={styles.bottomArea}>
         <View style={styles.redBackground} />
-        <TouchableOpacity style={styles.cancelButton} onPress = {handleNext}>
+        <TouchableOpacity style={styles.cancelButton} onPress={handleNext}>
           <Text style={styles.cancelText}>Cancelar</Text>
         </TouchableOpacity>
       </View>
@@ -57,6 +63,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 60,
     position: "relative",
+    marginBottom: 100,
   },
   headerTitle: {
     fontSize: 18,
@@ -82,7 +89,7 @@ const styles = StyleSheet.create({
     fontSize: 26,
     color: "#8C8C8C",
     fontStyle: "italic",
-    marginBottom: 200,
+    marginBottom: 150,
   },
 
   containerOptions: {
@@ -159,6 +166,11 @@ const styles = StyleSheet.create({
   },
   cancelText: {
     color: "#B71C2C",
+    fontWeight: "600",
+    fontSize: 16,
+  },
+  optionText: {
+    color: "#000",
     fontWeight: "600",
     fontSize: 16,
   },
