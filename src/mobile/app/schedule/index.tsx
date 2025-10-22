@@ -1,54 +1,50 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import CancelButton from "./components/cancelbuttom";
+import Goback from "./components/goback";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
+
 
 export default function Schedule() {
   const router = useRouter();
-
+  
   const handleNext = () => {
     router.push("/schedule/segunda");
-  };
-
-  const handleBack = () => {
-    router.back();
-  };
+  }
 
   return (
-    <View style={styles.container}>
-      {/* Cabeçalho */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={handleBack}>
-          <Ionicons name="chevron-back" size={22} color="#000" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Pré-triagem</Text>
-      </View>
-
-      {/* Pergunta + Opções (agora dentro de content para centralizar) */}
-      <View style={styles.content}>
-        <Text style={styles.question}>Você tem mais de 50kg?</Text>
-
-        <View style={styles.containerOptions}>
-          <TouchableOpacity style={styles.sim} onPress={handleNext}>
-            <Text style={styles.optionText}>Sim</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.nao} onPress={handleNext}>
-            <Text style={styles.optionText}>Não</Text>
-          </TouchableOpacity>
+      <SafeAreaView style={styles.container}>
+        {/* Cabeçalho */}
+        <View style={styles.header}>
+          <Goback></Goback>
+          <Text style={styles.headerTitle}>Pré-triagem</Text>
         </View>
-      </View>
+  
+        {/* Pergunta + Opções (agora dentro de content para centralizar) */}
+        <View style={styles.content}>
+          <Text style={styles.question}>Você tem mais de 50kg?</Text>
+  
+          <View style={styles.containerOptions}>
 
-      {/* Fundo curvado */}
-      <View style={styles.bottomArea}>
-        <View style={styles.redBackground} />
-        <TouchableOpacity style={styles.cancelButton} onPress={handleNext}>
-          <Text style={styles.cancelText}>Cancelar</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-}
+            <TouchableOpacity style={styles.sim} onPress = {handleNext}>
+              <Text style={styles.optionText}>Sim</Text>
+            </TouchableOpacity>
+  
+            <TouchableOpacity style={styles.nao} onPress = {handleNext}>
+              <Text style={styles.optionText}>Não</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+  
+        {/* Fundo curvado */}
+        <View style={styles.bottomArea}>
+          <View style={styles.redBackground} />
+          <CancelButton></CancelButton>
+        </View>
+      </SafeAreaView>
+    );
+  }
 
 const styles = StyleSheet.create({
   container: {
@@ -63,6 +59,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 60,
     position: "relative",
+    marginBottom: 100,
   },
   headerTitle: {
     fontSize: 18,
@@ -79,7 +76,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     paddingHorizontal: 30,
-    justifyContent: "center", // centraliza verticalmente
+    justifyContent: "center", 
     paddingVertical: 20,
     marginBottom: 50,
   },
@@ -88,7 +85,7 @@ const styles = StyleSheet.create({
     fontSize: 26,
     color: "#8C8C8C",
     fontStyle: "italic",
-    marginBottom: 200,
+    marginBottom: 150,
   },
 
   containerOptions: {
@@ -148,26 +145,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 8000,
     transform: [{ scaleX: 1.4 }, { scaleY: 1.5 }, { rotate: "-6deg" }],
   },
-
-  // Botão cancelar
-  cancelButton: {
-    position: "absolute",
-    bottom: 80,
-    backgroundColor: "#fff",
-    paddingHorizontal: 45,
-    paddingVertical: 10,
-    borderRadius: 8,
-    elevation: 4, // Android
-    shadowColor: "#000", // iOS
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-  },
-  cancelText: {
-    color: "#B71C2C",
-    fontWeight: "600",
-    fontSize: 16,
-  },
+  
   optionText: {
     color: "#000",
     fontWeight: "600",

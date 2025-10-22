@@ -1,17 +1,16 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import CancelButton from "./components/cancelbuttom";
 import Goback from "./components/goback";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useRouter } from "expo-router";
 
 
-export default function Segunda() {
-  const router = useRouter();
+export default function Oitava() {
+//   const router = useRouter();
   
-  const handleNext = () => {
-    router.push("/schedule/terceira");
-  }
+//   const handleNext = () => {
+//     router.push();
+//   }
 
   return (
       <SafeAreaView style={styles.container}>
@@ -23,15 +22,15 @@ export default function Segunda() {
   
         {/* Pergunta + Opções (agora dentro de content para centralizar) */}
         <View style={styles.content}>
-          <Text style={styles.question}>Sua última doação foi há mais de 60 dias (homens) ou 90 dias (mulheres)?</Text>
+          <Text style={styles.question}>Tem alguma doença crônica ou transmissível pelo sangue?</Text>
   
           <View style={styles.containerOptions}>
 
-            <TouchableOpacity style={styles.sim} onPress = {handleNext}>
+            <TouchableOpacity style={styles.sim}>
               <Text style={styles.optionText}>Sim</Text>
             </TouchableOpacity>
   
-            <TouchableOpacity style={styles.nao} onPress = {handleNext}>
+            <TouchableOpacity style={styles.nao}>
               <Text style={styles.optionText}>Não</Text>
             </TouchableOpacity>
           </View>
@@ -39,8 +38,8 @@ export default function Segunda() {
   
         {/* Fundo curvado */}
         <View style={styles.bottomArea}>
-          <View style={styles.redBackground} />
-          <CancelButton></CancelButton>
+          <View style={styles.redBackground}></View>
+            <CancelButton></CancelButton>
         </View>
       </SafeAreaView>
     );

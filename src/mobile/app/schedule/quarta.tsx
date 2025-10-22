@@ -6,11 +6,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 
 
-export default function Segunda() {
+export default function Quarta() {
   const router = useRouter();
   
   const handleNext = () => {
-    router.push("/schedule/terceira");
+    router.push("/schedule/quinta");
   }
 
   return (
@@ -23,7 +23,7 @@ export default function Segunda() {
   
         {/* Pergunta + Opções (agora dentro de content para centralizar) */}
         <View style={styles.content}>
-          <Text style={styles.question}>Sua última doação foi há mais de 60 dias (homens) ou 90 dias (mulheres)?</Text>
+          <Text style={styles.question}>Ficou gripado, com febre ou alguma infecção nos últimos 7 dias?</Text>
   
           <View style={styles.containerOptions}>
 
@@ -39,8 +39,8 @@ export default function Segunda() {
   
         {/* Fundo curvado */}
         <View style={styles.bottomArea}>
-          <View style={styles.redBackground} />
-          <CancelButton></CancelButton>
+          <View style={styles.redBackground}></View>
+            <CancelButton></CancelButton>
         </View>
       </SafeAreaView>
     );
