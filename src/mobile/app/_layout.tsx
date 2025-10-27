@@ -1,34 +1,37 @@
-import { Stack } from 'expo-router';
 import { useFonts } from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-import '../global.css';
+import { Stack } from 'expo-router';
+import React from 'react';
+import { ActivityIndicator, View } from 'react-native';
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
+import { AuthProvider } from '../context/AuthContext';
+
+import '../global.css';
 
 export default function RootLayout() {
   const [loaded] = useFonts({
-    //SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    'DM Sans': require('../assets/fonts/dm-sans.ttf'),
+    'Outfit-Thin': require('../assets/fonts/outfit-thin.ttf'),
+    'Outfit-ExtraLight': require('../assets/fonts/outfit-extra-light.ttf'),
+    'Outfit-Light': require('../assets/fonts/outfit-light.ttf'),
+    'Outfit-Regular': require('../assets/fonts/outfit-regular.ttf'),
+    'Outfit-Medium': require('../assets/fonts/outfit-medium.ttf'),
+    'Outfit-SemiBold': require('../assets/fonts/outfit-semi-bold.ttf'),
+    'Outfit-Bold': require('../assets/fonts/outfit-bold.ttf'),
+    'Outfit-ExtraBold': require('../assets/fonts/outfit-extra-bold.ttf'),
+    'Outfit-Black': require('../assets/fonts/outfit-black.ttf'),
   });
 
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
   if (!loaded) {
-    return null;
+    return (
+      <View className="flex-1 items-center justify-center bg-white">
+        <ActivityIndicator />
+      </View>
+    );
   }
 
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="index" />
-      <Stack.Screen name="onboarding1" />
-      <Stack.Screen name="onboarding2" />
-      <Stack.Screen name="loading" />
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-    </Stack>
+    <AuthProvider>
+      <Stack screenOptions={{ headerShown: false }} />
+    </AuthProvider>
   );
 }
