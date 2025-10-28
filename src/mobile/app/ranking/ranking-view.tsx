@@ -4,7 +4,9 @@ import { useRouter } from 'expo-router';
 import { CaretLeftIcon } from 'phosphor-react-native';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 import PodiumImg from '../../assets/images/podium.png';
+
 const ranking = [
   { name: 'Guilherme Santos', lives: 32, initial: 'G' },
   { name: 'Eduarda Moreira', lives: 24, initial: 'E' },
