@@ -1,7 +1,7 @@
 import { Link, useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import ScreenTemplate from '../../components/ScreenTemplate';
 import { useAuth } from '../../context/AuthContext';
 
 export default function SignIn() {
@@ -36,7 +36,7 @@ export default function SignIn() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-white p-6">
+    <ScreenTemplate className="flex-1 bg-white p-6">
       <View className="mt-10">
         <Text className="mb-2 text-3xl font-outfit text-gray-900">
           Bem-vindo
@@ -97,6 +97,6 @@ export default function SignIn() {
           </Link>
         </View>
       </View>
-    </SafeAreaView>
+    </ScreenTemplate>
   );
 }

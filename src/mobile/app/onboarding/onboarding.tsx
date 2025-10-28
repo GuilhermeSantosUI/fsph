@@ -24,20 +24,19 @@ type Slide = {
   title: string;
   description: string;
   icon: MiniIcon;
-  // tema visual para diferenciar cada página
-  accent: string; // cor principal (ícones/botão)
-  bg: string; // cor do círculo de fundo
-  cards: { icon: MiniIcon; text: string }[]; // cards flutuantes por slide
+
+  accent: string;
+  bg: string;
+  cards: { icon: MiniIcon; text: string }[];
   variant: 'donors' | 'places' | 'tracking';
   extras?: {
-    nearby?: string; // label curto para pill de lugares próximos
-    center?: string; // label do hemocentro/cartão
-    donors?: string[]; // nomes fictícios para avatares
+    nearby?: string;
+    center?: string;
+    donors?: string[];
   };
 };
 
 export default function Onboarding() {
-  // helper para sombra consistente
   const shadow = {
     shadowColor: '#111827',
     shadowOpacity: 0.12,
@@ -54,8 +53,8 @@ export default function Onboarding() {
         description:
           'Descubra como é simples fazer a diferença. Conecte-se a campanhas e bancos de sangue perto de você.',
         icon: 'blood-bag',
-        accent: '#ef4444', // red-500
-        bg: '#fef2f2', // red-50
+        accent: '#ef4444',
+        bg: '#fef2f2',
         cards: [
           { icon: 'account-heart', text: '+1 vida impactada' },
           { icon: 'hospital-building', text: 'Hemocentro próximo' },
@@ -69,8 +68,8 @@ export default function Onboarding() {
         description:
           'Receba avisos sobre eventos e postos de doação conforme seu perfil e localização.',
         icon: 'hospital-marker',
-        accent: '#f59e0b', // amber-500
-        bg: '#fffbeb', // amber-50
+        accent: '#f59e0b',
+        bg: '#fffbeb',
         cards: [
           { icon: 'calendar-clock', text: 'Campanhas hoje' },
           { icon: 'map-marker-radius', text: 'Perto de você' },
@@ -87,8 +86,8 @@ export default function Onboarding() {
         description:
           'Monitore o histórico, elegibilidade e lembretes no período certo para sua próxima doação.',
         icon: 'calendar-heart',
-        accent: '#10b981', // emerald-500
-        bg: '#ecfdf5', // emerald-50
+        accent: '#10b981',
+        bg: '#ecfdf5',
         cards: [
           { icon: 'check-decagram', text: 'Próxima elegibilidade' },
           { icon: 'bell-badge-outline', text: 'Lembrete ativado' },
@@ -106,7 +105,7 @@ export default function Onboarding() {
   const listRef = useRef<FlatList<Slide>>(null);
   const [index, setIndex] = useState(0);
   const scrollX = useRef(new Animated.Value(0)).current;
-  // animações contínuas sutis para dar vida à tela
+
   const floatA = useRef(new Animated.Value(0)).current;
   const floatB = useRef(new Animated.Value(1)).current;
   const contentAnim = useRef(new Animated.Value(0)).current;
@@ -141,7 +140,6 @@ export default function Onboarding() {
     };
   }, [floatA, floatB]);
 
-  // animação de entrada do conteúdo a cada mudança de index
   useEffect(() => {
     contentAnim.setValue(0);
     Animated.timing(contentAnim, {
@@ -200,7 +198,6 @@ export default function Onboarding() {
     variant: Slide['variant'];
     extras?: Slide['extras'];
   }) => {
-    // parallax por slide
     const inputRange = [(i - 1) * width, i * width, (i + 1) * width];
     const translateX = scrollX.interpolate({
       inputRange,
@@ -222,7 +219,6 @@ export default function Onboarding() {
       outputRange: [0, 6],
     });
 
-    // componentes auxiliares
     const DonorStack = () => (
       <Animated.View
         className="absolute -top-2 -left-8"
@@ -289,14 +285,12 @@ export default function Onboarding() {
         style={{ transform: [{ translateX }, { scale }] }}
         className="items-center justify-center"
       >
-        {/* círculo de fundo dinâmico */}
         <View
           className="relative mb-8 h-48 w-48 items-center justify-center rounded-full"
           style={[shadow, { backgroundColor: bg }]}
         >
           <MaterialCommunityIcons name={icon} size={88} color={accent} />
 
-          {/* cards flutuantes customizados */}
           <Animated.View
             style={{
               transform: [{ rotate: '-6deg' }, { translateY: floatUp }],
@@ -333,7 +327,6 @@ export default function Onboarding() {
             </View>
           </Animated.View>
 
-          {/* extras por variante: doadores / lugares próximos / hemocentro */}
           {variant === 'donors' && <DonorStack />}
           {variant !== 'donors' && <NearbyPill label={extras?.nearby} />}
           {variant !== 'donors' && <CenterCard label={extras?.center} />}
@@ -431,7 +424,6 @@ export default function Onboarding() {
           <Text className="text-base font-dmsans text-gray-500">Pular</Text>
         </TouchableOpacity>
 
-        {/* Botão muda a cor conforme o slide atual para reforçar identidade */}
         <TouchableOpacity
           onPress={goNext}
           className="rounded-full px-6 py-3"

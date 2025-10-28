@@ -51,8 +51,50 @@ export async function unmarkAppointment(protocolo: string) {
   return data;
 }
 
+export type Appointment = {
+  protocolo: string;
+  data_hora: string; // ISO or display
+  local: string;
+  id_bloco_doacao: string;
+  doador_cpf?: string;
+  doador_dt_nascimento?: string;
+  tipo?: 'D' | 'M';
+};
+
+export async function getAppointments(): Promise<Appointment[]> {
+  try {
+    // tentativa de endpoint real — ajuste conforme API disponível
+    const { data } = await api.get('/apiagendamento/agendamento/listar');
+    // espera-se que data seja array de agendamentos — adapte conforme retorno
+    return data as Appointment[];
+  } catch {
+    // fallback: mock data local para desenvolvimento
+    return [
+      {
+        protocolo: 'ABC123456',
+        data_hora: '2025-11-07T10:30:00',
+        local: 'E.M.E.F. José Conrado de Araújo - Rua Senador Rollemberg, 396',
+        id_bloco_doacao: 'block-1',
+        doador_cpf: '123.456.789-00',
+        doador_dt_nascimento: '1990-01-01',
+        tipo: 'D',
+      },
+      {
+        protocolo: 'XYZ987654',
+        data_hora: '2025-12-15T14:00:00',
+        local: 'Unidade Básica de Saúde - Av. Principal, 100',
+        id_bloco_doacao: 'block-2',
+        doador_cpf: '987.654.321-00',
+        doador_dt_nascimento: '1985-06-20',
+        tipo: 'M',
+      },
+    ];
+  }
+}
+
 export default {
   markAppointment,
   editAppointment,
   unmarkAppointment,
+  getAppointments,
 };
