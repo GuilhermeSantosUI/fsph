@@ -1,9 +1,24 @@
 import { CalendarBlank } from 'phosphor-react-native';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, FlatList, Modal, StatusBar, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  FlatList,
+  Modal,
+  StatusBar,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Appointment, editAppointment, getAppointments, unmarkAppointment } from '../../services/scheduling';
+import {
+  Appointment,
+  editAppointment,
+  getAppointments,
+  unmarkAppointment,
+} from '../../services/scheduling';
 
 export default function SchedulingTab() {
   const [loading, setLoading] = useState(true);
@@ -11,6 +26,8 @@ export default function SchedulingTab() {
   const [modalVisible, setModalVisible] = useState(false);
   const [selected, setSelected] = useState<Appointment | null>(null);
   const [newBlockId, setNewBlockId] = useState('');
+  const [refreshing, setRefreshing] = useState(false);
+  const [actionLoading, setActionLoading] = useState<string | null>(null);
 
   useEffect(() => {
     fetchAppointments();
@@ -25,7 +42,13 @@ export default function SchedulingTab() {
       console.warn('Erro ao buscar agendamentos', err);
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
+  }
+
+  async function onRefresh() {
+    setRefreshing(true);
+    await fetchAppointments();
   }
 
   function openRescheduleModal(item: Appointment) {
@@ -41,6 +64,7 @@ export default function SchedulingTab() {
         text: 'Sim',
         onPress: async () => {
           try {
+            setActionLoading(item.protocolo);
             await unmarkAppointment(item.protocolo);
             setAppointments((prev) =>
               prev.filter((a) => a.protocolo !== item.protocolo)
@@ -49,6 +73,8 @@ export default function SchedulingTab() {
           } catch (err) {
             console.warn(err);
             Alert.alert('Erro', 'Não foi possível cancelar. Tente novamente.');
+          } finally {
+            setActionLoading(null);
           }
         },
       },
@@ -63,7 +89,7 @@ export default function SchedulingTab() {
     }
 
     try {
-      // editAppointment exige: doador_dt_nascimento, doador_cpf, tipo, id_bloco_doacao, protocolo
+      setActionLoading(selected.protocolo);
       await editAppointment({
         doador_dt_nascimento: selected.doador_dt_nascimento || '',
         doador_cpf: selected.doador_cpf || '',
@@ -72,7 +98,6 @@ export default function SchedulingTab() {
         protocolo: selected.protocolo,
       } as any);
 
-      // atualizar localmente
       setAppointments((prev) =>
         prev.map((a) =>
           a.protocolo === selected.protocolo
@@ -86,6 +111,8 @@ export default function SchedulingTab() {
     } catch (err) {
       console.warn('Erro ao reagendar', err);
       Alert.alert('Erro', 'Não foi possível reagendar. Tente novamente.');
+    } finally {
+      setActionLoading(null);
     }
   }
 
@@ -109,15 +136,25 @@ export default function SchedulingTab() {
           <TouchableOpacity
             className="flex-1 bg-[#e11d48] py-2 rounded-lg items-center"
             onPress={() => openRescheduleModal(item)}
+            disabled={!!actionLoading}
           >
-            <Text className="text-white font-outfit">Reagendar</Text>
+            {actionLoading === item.protocolo ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <Text className="text-white font-outfit">Reagendar</Text>
+            )}
           </TouchableOpacity>
 
           <TouchableOpacity
             className="flex-1 bg-gray-100 py-2 rounded-lg items-center"
             onPress={() => handleCancel(item)}
+            disabled={!!actionLoading}
           >
-            <Text className="text-[#e11d48]">Cancelar</Text>
+            {actionLoading === item.protocolo ? (
+              <ActivityIndicator color="#e11d48" />
+            ) : (
+              <Text className="text-[#e11d48]">Cancelar</Text>
+            )}
           </TouchableOpacity>
         </View>
       </View>
@@ -148,6 +185,8 @@ export default function SchedulingTab() {
           data={appointments}
           keyExtractor={(item) => item.protocolo}
           renderItem={renderItem}
+          refreshing={refreshing}
+          onRefresh={onRefresh}
           contentContainerStyle={{ paddingBottom: 40 }}
           ListEmptyComponent={() => (
             <View className="items-center mt-12">
@@ -187,8 +226,13 @@ export default function SchedulingTab() {
               <TouchableOpacity
                 className="flex-1 bg-[#e11d48] py-3 rounded-lg items-center"
                 onPress={handleReschedule}
+                disabled={!!actionLoading}
               >
-                <Text className="text-white">Confirmar</Text>
+                {actionLoading === selected?.protocolo ? (
+                  <ActivityIndicator color="#fff" />
+                ) : (
+                  <Text className="text-white">Confirmar</Text>
+                )}
               </TouchableOpacity>
             </View>
           </View>

@@ -45,8 +45,8 @@ export default function Community() {
   const router = useRouter();
 
   return (
-    <SafeAreaView className="flex-1 bg-white px-4">
-      <ScrollView>
+    <SafeAreaView className="bg-white">
+      <ScrollView className="px-6">
         <View className="py-6 flex-row items-center justify-between">
           <TouchableOpacity
             onPress={() => router.back()}
