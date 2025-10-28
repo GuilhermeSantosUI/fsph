@@ -1,5 +1,5 @@
+import AppHeader from '@/components/app-header';
 import { useRouter } from 'expo-router';
-import { CaretLeftIcon } from 'phosphor-react-native';
 import React, { useState } from 'react';
 import {
   Pressable,
@@ -64,18 +64,7 @@ export default function PreScreeningScreen() {
   return (
     <SafeAreaView className="flex-1 bg-white">
       <ScrollView className="flex-1">
-        <View className="px-6 py-6 flex-row items-center justify-between border-b border-gray-200">
-          <TouchableOpacity
-            onPress={() => router.back()}
-            className="w-10 h-10 flex items-center justify-center"
-          >
-            <CaretLeftIcon size={24} color="#000" />
-          </TouchableOpacity>
-          <Text className="text-xl font-semibold text-black font-outfit">
-            Agendamento
-          </Text>
-          <View className="w-10 h-10" />
-        </View>
+        <AppHeader title="Agendamento" onBack={() => router.back()} />
 
         <View className="flex-1 px-6 py-8">
           <Text className="text-[28px] font-semibold text-black mb-4 font-outfit leading-9">

@@ -1,7 +1,6 @@
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import {
-  CaretLeftIcon,
   DotsThreeOutlineIcon,
   HeartIcon,
   PaperPlaneTiltIcon,
@@ -9,6 +8,7 @@ import {
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import AppHeader from '@/components/app-header';
 import FSPHImg from '../../assets/images/fsph.png';
 
 const posts = [
@@ -47,20 +47,7 @@ export default function Community() {
   return (
     <SafeAreaView className="bg-white">
       <ScrollView className="px-6">
-        <View className="py-6 flex-row items-center justify-between">
-          <TouchableOpacity
-            onPress={() => router.back()}
-            className="w-10 h-10 flex items-center justify-center"
-          >
-            <CaretLeftIcon size={18} />
-          </TouchableOpacity>
-          <Text className="text-xl font-semibold text-black font-outfit">
-            Comunidade
-          </Text>
-          <View className="w-8 h-8 opacity-0">
-            <CaretLeftIcon size={18} />
-          </View>
-        </View>
+        <AppHeader title="Comunidade" onBack={() => router.back()} />
 
         <View className="flex-1">
           {posts.map((post, idx) => (

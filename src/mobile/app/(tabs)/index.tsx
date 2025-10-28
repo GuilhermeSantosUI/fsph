@@ -1,14 +1,8 @@
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
-import { CaretLeftIcon, DropIcon } from 'phosphor-react-native';
+import { DropIcon } from 'phosphor-react-native';
 import React, { useState } from 'react';
-import {
-  ScrollView,
-  StatusBar,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { ScrollView, StatusBar, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import BgCardImg from '../../assets/images/bg-card.png';
@@ -18,6 +12,7 @@ import PodiumImg from '../../assets/images/podium.png';
 import SocialImg from '../../assets/images/social.png';
 import SupportImg from '../../assets/images/support.png';
 import AddToWalletModal from '../../components/add-to-wallet-modal';
+import AppHeader from '../../components/app-header';
 import RankingModal from '../ranking/ranking-modal';
 
 export default function HomeScreen() {
@@ -50,17 +45,7 @@ export default function HomeScreen() {
           translucent
         />
 
-        <View className="py-6 flex-row items-center justify-between">
-          <TouchableOpacity className="w-10 h-10 flex items-center justify-center">
-            <CaretLeftIcon size={18} />
-          </TouchableOpacity>
-          <Text className="text-xl font-semibold text-black font-outfit">
-            Doações
-          </Text>
-          <View className="w-8 h-8 opacity-0">
-            <CaretLeftIcon size={18} />
-          </View>
-        </View>
+        <AppHeader title="Doações" onBack={() => router.back()} />
 
         <View className="rounded-2xl border-2 border-red-300 h-[230px] relative overflow-hidden bg-[#e11d48] px-6 py-6 mt-2 mb-8 w-full self-center shadow-md shadow-black/10">
           <Image
