@@ -1,16 +1,16 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import CancelButton from "./components/cancelbuttom";
 import Goback from "./components/goback";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 
 
-export default function Oitava() {
+export default function Tipo() {
   const router = useRouter();
   
   const handleNext = () => {
-    router.push("/schedule/tipo");
+    router.push("/schedule/segunda");
   }
 
   return (
@@ -23,28 +23,31 @@ export default function Oitava() {
   
         {/* Pergunta + Opções (agora dentro de content para centralizar) */}
         <View style={styles.content}>
-          <Text style={styles.question}>Tem alguma doença crônica ou transmissível pelo sangue?</Text>
+          <Text style={styles.question}>Escolha abaixo como deseja realizar sua doação. Você pode agendar uma doação individual em um posto de coleta ou se inscrever em uma campanha coletiva organizada pelo HEMOSE.</Text>
   
-          <View style={styles.containerOptions}>
 
-            <TouchableOpacity style={styles.sim} onPress = {handleNext}>
-              <Text style={styles.optionText}>Sim</Text>
-            </TouchableOpacity>
-  
-            <TouchableOpacity style={styles.nao} onPress = {handleNext}>
-              <Text style={styles.optionText}>Não</Text>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity style={styles.containerOptions1}>
+            <Text style={styles.optionText}>Doação Individual</Text>
+
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.containerOptions2}>
+            <Text style={styles.optionText}>Campanha Coletiva</Text>
+
+          </TouchableOpacity>
+
         </View>
   
         {/* Fundo curvado */}
         <View style={styles.bottomArea}>
-          <View style={styles.redBackground}></View>
-            <CancelButton></CancelButton>
+          <View style={styles.redBackground} />
+          <CancelButton></CancelButton>
         </View>
+
       </SafeAreaView>
     );
   }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -59,8 +62,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 60,
     position: "relative",
-    marginBottom: 100,
+    marginBottom: 180,
   },
+
   headerTitle: {
     fontSize: 18,
     fontWeight: "600",
@@ -85,17 +89,18 @@ const styles = StyleSheet.create({
     fontSize: 26,
     color: "#8C8C8C",
     fontStyle: "italic",
-    marginBottom: 150,
+    marginTop: 100,
   },
 
-  containerOptions: {
+  containerOptions1: {
+    marginTop: 50,
     backgroundColor: "#F0F0F0",
-    marginBottom: 200,
+    marginBottom: 10,
     borderRadius: 8,
     padding: 10,
     width: "90%",
     alignSelf: "center",
-    minHeight: 220,
+    minHeight: 150,
     justifyContent: "center",
     alignItems: "center",
     zIndex: 5,
@@ -106,25 +111,28 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
   },
 
-  sim: {
-    backgroundColor: "#D9D9D9",
-    width: "70%",
-    paddingVertical: 15,
-    paddingHorizontal: 60,
-    borderRadius: 10,
-    marginBottom: 20,
+  containerOptions2: {
+    backgroundColor: "#F0F0F0",
+    marginBottom: 300,
+    borderRadius: 8,
+    padding: 10,
+    width: "90%",
+    alignSelf: "center",
+    minHeight: 150,
     justifyContent: "center",
     alignItems: "center",
+    zIndex: 5,
+    elevation: 6, // Android
+    shadowColor: "#000", // iOS
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
   },
-  nao: {
-    backgroundColor: "#D9D9D9",
-    width: "70%",
-    paddingVertical: 15,
-    paddingHorizontal: 60,
-    borderRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
-  },
+    optionText: {
+        color: "#000",
+        fontWeight: "600",
+        fontSize: 16,
+    },
 
   // Área inferior
   bottomArea: {
@@ -146,9 +154,5 @@ const styles = StyleSheet.create({
     transform: [{ scaleX: 1.4 }, { scaleY: 1.5 }, { rotate: "-6deg" }],
   },
   
-  optionText: {
-    color: "#000",
-    fontWeight: "600",
-    fontSize: 16,
-  },
+  
 });
