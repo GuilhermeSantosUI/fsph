@@ -9,31 +9,34 @@ import { useRouter } from "expo-router";
 export default function Tipo() {
   const router = useRouter();
   
-  const handleNext = () => {
-    router.push("/schedule/segunda");
+  const handleIndividual = () => {
+    router.push("/schedule/agendarind");
+  }
+
+  const handleCampanha = () => {
+    router.push("/schedule/agendarcampanha");
   }
 
   return (
       <SafeAreaView style={styles.container}>
-        {/* Cabeçalho */}
         <View style={styles.header}>
           <Goback></Goback>
           <Text style={styles.headerTitle}>Pré-triagem</Text>
         </View>
   
-        {/* Pergunta + Opções (agora dentro de content para centralizar) */}
         <View style={styles.content}>
           <Text style={styles.question}>Escolha abaixo como deseja realizar sua doação. Você pode agendar uma doação individual em um posto de coleta ou se inscrever em uma campanha coletiva organizada pelo HEMOSE.</Text>
   
 
-          <TouchableOpacity style={styles.containerOptions1}>
-            <Text style={styles.optionText}>Doação Individual</Text>
+          <TouchableOpacity style={styles.containerOptions1} onPress = {handleIndividual}>
+            <Text style={styles.optionTitle}>Doação Individual</Text>
+            <Text style={styles.optionText}>Agende sua doação em um posto de coleta. Escolha a data, horário e local que preferir.</Text>
 
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.containerOptions2}>
-            <Text style={styles.optionText}>Campanha Coletiva</Text>
-
+          <TouchableOpacity style={styles.containerOptions2} onPress = {handleCampanha}>
+            <Text style={styles.optionTitle}>Campanha Coletiva</Text>
+            <Text style={styles.optionText}>Participe de campanhas organizadas em universidades, empresas e praças públicas. Encontre a mais próxima de você.</Text>
           </TouchableOpacity>
 
         </View>
@@ -128,10 +131,22 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.15,
     shadowRadius: 4,
   },
-    optionText: {
-        color: "#000",
-        fontWeight: "600",
-        fontSize: 16,
+
+  optionTitle: {
+    color: "#8C8C8C",
+    fontWeight: "900",
+    fontSize: 20,
+    marginBottom: 5,
+  },
+
+    
+  optionText: {
+        color: "#8C8C8C",
+        fontWeight: "500",
+        fontSize: 18,
+        marginTop: 10,
+        marginBottom: 10,
+        textAlign: "center",
     },
 
   // Área inferior
