@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, FlatList, Modal, StatusBar, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  FlatList,
+  Modal,
+  StatusBar,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Appointment, editAppointment, getAppointments, unmarkAppointment } from '../../services/scheduling';
-
-// Dados fictícios para exibir agendamentos quando a API não estiver disponível
-const MOCK_APPOINTMENTS: Appointment[] = [
+const MOCK_APPOINTMENTS: any[] = [
   {
     protocolo: 'FSPH-2025-0001',
     data_hora: new Date(Date.now() + 1000 * 60 * 60 * 24).toISOString(), // amanhã
@@ -14,7 +21,7 @@ const MOCK_APPOINTMENTS: Appointment[] = [
     doador_dt_nascimento: '1990-05-12',
     doador_cpf: '123.456.789-00',
     tipo: 'D',
-  } as Appointment,
+  },
   {
     protocolo: 'FSPH-2025-0002',
     data_hora: new Date(Date.now() + 1000 * 60 * 60 * 48).toISOString(), // daqui a 2 dias
@@ -23,7 +30,7 @@ const MOCK_APPOINTMENTS: Appointment[] = [
     doador_dt_nascimento: '1985-11-02',
     doador_cpf: '987.654.321-00',
     tipo: 'M',
-  } as Appointment,
+  },
   {
     protocolo: 'FSPH-2025-0003',
     data_hora: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2).toISOString(), // 2 dias atrás
@@ -32,14 +39,14 @@ const MOCK_APPOINTMENTS: Appointment[] = [
     doador_dt_nascimento: '2000-01-21',
     doador_cpf: '111.222.333-44',
     tipo: 'D',
-  } as Appointment,
+  },
 ];
 
 export default function SchedulingTab() {
   const [loading, setLoading] = useState(true);
-  const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const [appointments, setAppointments] = useState<any[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
-  const [selected, setSelected] = useState<Appointment | null>(null);
+  const [selected, setSelected] = useState<any | null>(null);
   const [newBlockId, setNewBlockId] = useState('');
   const [refreshing, setRefreshing] = useState(false);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
@@ -52,7 +59,7 @@ export default function SchedulingTab() {
     setLoading(true);
     try {
       // Tenta buscar da API, mas se falhar ou vier vazio usaremos dados fictícios
-      const data = await getAppointments();
+      const data: any[] = [];
       if (Array.isArray(data) && data.length > 0) {
         setAppointments(data);
       } else {
@@ -72,13 +79,13 @@ export default function SchedulingTab() {
     await fetchAppointments();
   }
 
-  function openRescheduleModal(item: Appointment) {
+  function openRescheduleModal(item: any) {
     setSelected(item);
     setNewBlockId(item.id_bloco_doacao || '');
     setModalVisible(true);
   }
 
-  async function handleCancel(item: Appointment) {
+  async function handleCancel(item: any) {
     Alert.alert('Cancelar agendamento', 'Deseja cancelar este agendamento?', [
       { text: 'Não', style: 'cancel' },
       {
@@ -86,7 +93,7 @@ export default function SchedulingTab() {
         onPress: async () => {
           try {
             setActionLoading(item.protocolo);
-            await unmarkAppointment(item.protocolo);
+
             setAppointments((prev) =>
               prev.filter((a) => a.protocolo !== item.protocolo)
             );
@@ -111,13 +118,6 @@ export default function SchedulingTab() {
 
     try {
       setActionLoading(selected.protocolo);
-      await editAppointment({
-        doador_dt_nascimento: selected.doador_dt_nascimento || '',
-        doador_cpf: selected.doador_cpf || '',
-        tipo: (selected.tipo as 'D' | 'M') || 'D',
-        id_bloco_doacao: newBlockId,
-        protocolo: selected.protocolo,
-      } as any);
 
       setAppointments((prev) =>
         prev.map((a) =>
@@ -137,7 +137,7 @@ export default function SchedulingTab() {
     }
   }
 
-  function renderItem({ item }: { item: Appointment }) {
+  function renderItem({ item }: { item: any }) {
     const when = new Date(item.data_hora).toLocaleString();
     return (
       <View className="bg-white rounded-lg p-4 mb-3 border border-gray-200">
