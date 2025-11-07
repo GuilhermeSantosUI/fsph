@@ -1,7 +1,6 @@
 import Badge from '@/components/badge';
 import {
   CaretRightIcon,
-  DropIcon,
   FileTextIcon,
   GearIcon,
   HandPalmIcon,
@@ -31,13 +30,13 @@ export default function ProfileScreen() {
       <View className="flex-row items-center justify-between px-1 mb-6">
         <View className="flex-row items-center">
           <View className="relative mr-4">
-            <View className="w-20 h-20 bg-black rounded-full items-center justify-center">
+            <View className="w-24 h-24 bg-black rounded-full items-center justify-center">
               <Text className="text-white text-5xl font-outfit">G</Text>
             </View>
 
             <Badge
               level="diamond"
-              size={36}
+              size={28}
               className="absolute -bottom-2 -right-2"
             />
           </View>
@@ -54,7 +53,6 @@ export default function ProfileScreen() {
       <View className="mt-4">
         {[
           { label: 'Configurações da conta', Icon: GearIcon },
-          { label: 'Farmácia Popular', Icon: DropIcon },
           { label: 'Privacidade', Icon: HandPalmIcon },
           { label: 'Receber ajuda', Icon: QuestionIcon },
           { label: 'Indicar para um amigo', Icon: UsersIcon },
@@ -74,7 +72,9 @@ export default function ProfileScreen() {
               ) : (
                 <Text className="text-2xl mr-4">⚙️</Text>
               )}
-              <Text className="text-base font-outfit">{item.label}</Text>
+              <Text className="text-xl font-outfit font-light">
+                {item.label}
+              </Text>
             </View>
 
             <Text className="text-gray-300">

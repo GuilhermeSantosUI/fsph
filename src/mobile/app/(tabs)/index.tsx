@@ -2,7 +2,13 @@ import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import { DropIcon } from 'phosphor-react-native';
 import React, { useState } from 'react';
-import { ScrollView, StatusBar, Text, TouchableOpacity, View } from 'react-native';
+import {
+  ScrollView,
+  StatusBar,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import BgCardImg from '../../assets/images/bg-card.png';
@@ -14,27 +20,29 @@ import SupportImg from '../../assets/images/support.png';
 import AddToWalletModal from '../../components/add-to-wallet-modal';
 import AppHeader from '../../components/app-header';
 import RankingModal from '../ranking/ranking-modal';
+import { BloodStocks } from './components/blood-stock-card';
+import { MenuButton } from './components/menu-button';
 
 export default function HomeScreen() {
   const router = useRouter();
   const [walletModalVisible, setWalletModalVisible] = useState(false);
   const [rankingModalVisible, setRankingModalVisible] = useState(false);
 
-  const handleOpenWalletModal = () => {
+  function handleOpenWalletModal() {
     setWalletModalVisible(true);
-  };
+  }
 
-  const handleCloseWalletModal = () => {
+  function handleCloseWalletModal() {
     setWalletModalVisible(false);
-  };
+  }
 
-  const handleOpenRankingModal = () => {
+  function handleOpenRankingModal() {
     setRankingModalVisible(true);
-  };
+  }
 
-  const handleCloseRankingModal = () => {
+  function handleCloseRankingModal() {
     setRankingModalVisible(false);
-  };
+  }
 
   return (
     <SafeAreaView className="bg-white">
@@ -149,6 +157,8 @@ export default function HomeScreen() {
           </View>
         </View>
 
+        <BloodStocks />
+
         <View className="flex-row w-full items-center justify-between rounded-xl py-6">
           <Text
             style={[{ fontSize: 18, color: '#8C8C8C' }]}
@@ -191,65 +201,12 @@ export default function HomeScreen() {
           visible={walletModalVisible}
           onClose={handleCloseWalletModal}
         />
+
         <RankingModal
           visible={rankingModalVisible}
           onClose={handleCloseRankingModal}
         />
       </ScrollView>
     </SafeAreaView>
-  );
-}
-
-type MenuButtonProps = React.ComponentProps<typeof TouchableOpacity> & {
-  label: string;
-  image?: any;
-  badge?: string;
-  enabled?: boolean;
-};
-
-export function MenuButton({
-  label,
-  image,
-  badge,
-  enabled = true,
-  className,
-  disabled,
-  activeOpacity,
-  ...rest
-}: MenuButtonProps) {
-  const computedDisabled = disabled ?? !enabled;
-  const computedActiveOpacity = activeOpacity ?? (enabled ? 0.7 : 1);
-  const mergedClassName =
-    `${className ?? ''} items-center w-full max-w-[76px] relative ${
-      !enabled ? 'opacity-50' : ''
-    }`.trim();
-
-  return (
-    <TouchableOpacity
-      className={mergedClassName}
-      activeOpacity={computedActiveOpacity}
-      disabled={computedDisabled}
-      {...rest}
-    >
-      <View className="bg-[#efefef] rounded-xl w-full py-3 flex items-center relative">
-        <Image source={image} style={{ width: 44, height: 44 }} />
-        {badge && (
-          <View className="flex px-4 py-1 bg-[#0E82FD] rounded-full absolute -top-2">
-            <Text
-              style={{
-                fontSize: 12,
-                color: '#ffffff',
-                marginTop: 3,
-              }}
-            >
-              {badge}
-            </Text>
-          </View>
-        )}
-      </View>
-      <Text style={{ fontSize: 14, marginTop: 6 }} className="font-outfit">
-        {label}
-      </Text>
-    </TouchableOpacity>
   );
 }

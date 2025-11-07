@@ -1,24 +1,39 @@
-import { CalendarBlank } from 'phosphor-react-native';
 import React, { useEffect, useState } from 'react';
-import {
-  ActivityIndicator,
-  Alert,
-  FlatList,
-  Modal,
-  StatusBar,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { ActivityIndicator, Alert, FlatList, Modal, StatusBar, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import {
-  Appointment,
-  editAppointment,
-  getAppointments,
-  unmarkAppointment,
-} from '../../services/scheduling';
+import { Appointment, editAppointment, getAppointments, unmarkAppointment } from '../../services/scheduling';
+
+// Dados fictícios para exibir agendamentos quando a API não estiver disponível
+const MOCK_APPOINTMENTS: Appointment[] = [
+  {
+    protocolo: 'FSPH-2025-0001',
+    data_hora: new Date(Date.now() + 1000 * 60 * 60 * 24).toISOString(), // amanhã
+    local: 'Hemocentro Central',
+    id_bloco_doacao: 'block-1',
+    doador_dt_nascimento: '1990-05-12',
+    doador_cpf: '123.456.789-00',
+    tipo: 'D',
+  } as Appointment,
+  {
+    protocolo: 'FSPH-2025-0002',
+    data_hora: new Date(Date.now() + 1000 * 60 * 60 * 48).toISOString(), // daqui a 2 dias
+    local: 'Unidade de Saúde Bairro Novo',
+    id_bloco_doacao: 'block-2',
+    doador_dt_nascimento: '1985-11-02',
+    doador_cpf: '987.654.321-00',
+    tipo: 'M',
+  } as Appointment,
+  {
+    protocolo: 'FSPH-2025-0003',
+    data_hora: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2).toISOString(), // 2 dias atrás
+    local: 'Clínica São José',
+    id_bloco_doacao: 'block-3',
+    doador_dt_nascimento: '2000-01-21',
+    doador_cpf: '111.222.333-44',
+    tipo: 'D',
+  } as Appointment,
+];
 
 export default function SchedulingTab() {
   const [loading, setLoading] = useState(true);
@@ -36,10 +51,16 @@ export default function SchedulingTab() {
   async function fetchAppointments() {
     setLoading(true);
     try {
+      // Tenta buscar da API, mas se falhar ou vier vazio usaremos dados fictícios
       const data = await getAppointments();
-      setAppointments(data);
+      if (Array.isArray(data) && data.length > 0) {
+        setAppointments(data);
+      } else {
+        setAppointments(MOCK_APPOINTMENTS);
+      }
     } catch (err) {
-      console.warn('Erro ao buscar agendamentos', err);
+      console.warn('Erro ao buscar agendamentos, usando dados fictícios', err);
+      setAppointments(MOCK_APPOINTMENTS);
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -119,7 +140,7 @@ export default function SchedulingTab() {
   function renderItem({ item }: { item: Appointment }) {
     const when = new Date(item.data_hora).toLocaleString();
     return (
-      <View className="bg-white rounded-lg p-4 mb-3 shadow-sm">
+      <View className="bg-white rounded-lg p-4 mb-3 border border-gray-200">
         <View className="flex-row justify-between">
           <View className="flex-1 pr-2">
             <Text className="text-black font-outfit text-[16px]">
@@ -132,7 +153,7 @@ export default function SchedulingTab() {
           </View>
         </View>
 
-        <View className="flex-row mt-4 space-x-3">
+        <View className="flex-row mt-4 gap-4">
           <TouchableOpacity
             className="flex-1 bg-[#e11d48] py-2 rounded-lg items-center"
             onPress={() => openRescheduleModal(item)}
@@ -169,9 +190,8 @@ export default function SchedulingTab() {
         translucent
       />
 
-      <View className="py-6 flex-row items-center">
-        <CalendarBlank size={22} />
-        <Text className="text-xl font-semibold ml-3 font-outfit">
+      <View className="py-6 items-center">
+        <Text className="text-xl font-semibold text-black font-outfit">
           Agendamentos
         </Text>
       </View>
@@ -216,7 +236,7 @@ export default function SchedulingTab() {
               placeholder="ex: block-3"
             />
 
-            <View className="flex-row space-x-3">
+            <View className="flex-row gap-4">
               <TouchableOpacity
                 className="flex-1 bg-gray-100 py-3 rounded-lg items-center"
                 onPress={() => setModalVisible(false)}

@@ -1,4 +1,4 @@
-import { UserDTO } from '../dtos/UserDTO';
+import { UserDTO } from '../dtos/user-dto';
 
 export interface IUserRepository {
   findByGoogleId(googleId: string): Promise<UserDTO | null>;

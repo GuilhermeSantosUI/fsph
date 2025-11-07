@@ -1,5 +1,5 @@
 import { prisma } from '@config/prisma';
-import { UserDTO } from '../dtos/UserDTO';
+import { UserDTO } from '../dtos/user-dto';
 import { IUserRepository } from './iuser-repository';
 
 export class UserRepository implements IUserRepository {

@@ -5,6 +5,6 @@ export async function getStock() {
   return data;
 }
 
-export default {
+export const stockService = {
   getStock,
 };

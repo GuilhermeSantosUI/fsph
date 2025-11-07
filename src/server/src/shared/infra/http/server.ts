@@ -10,14 +10,18 @@ const app = fastify();
 
 app.register(fastifyCors, { origin: '*' });
 
-app.register(fastifySwagger, {
-  swagger: {
-    info: {
-      title: 'Fastify API',
-      version: '1.0.0',
+app.register(
+  fastifySwagger as any,
+  {
+    swagger: {
+      info: {
+        title: 'Fastify API',
+        version: '1.0.0',
+      },
     },
-  },
-});
+    exposeRoute: true,
+  } as any
+);
 
 app.register(fastifySwaggerUi, {
   routePrefix: '/docs',
@@ -27,12 +31,16 @@ app.get('/', async () => {
   return { message: 'Google oAuth SSR Demo!' };
 });
 
-registerRoutes(app);
+async function start() {
+  await registerRoutes(app);
 
-app.listen({ port: 3000, host: '127.0.0.1' }, (err, address) => {
-  if (err) {
+  try {
+    const address = await app.listen({ port: 3000, host: '127.0.0.1' });
+    console.log(`Server listening at ${address}`);
+  } catch (err) {
     console.error(err);
     process.exit(1);
   }
-  console.log(`Server listening at ${address}`);
-});
+}
+
+start();

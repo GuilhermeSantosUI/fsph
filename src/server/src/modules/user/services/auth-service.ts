@@ -1,4 +1,4 @@
-import { UserDTO } from '../dtos/UserDTO';
+import { UserDTO } from '../dtos/user-dto';
 import { UserRepository } from '../repositories/user-repository';
 
 export class AuthService {
