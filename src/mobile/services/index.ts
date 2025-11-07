@@ -1,4 +1,19 @@
 import { QueryClient } from '@tanstack/react-query';
+import axios from 'axios';
+
+export const api = axios.create({
+  baseURL: 'http://localhost:3000',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+export const fsphApi = axios.create({
+  baseURL: 'https://api.fsph.se.gov.br',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -9,5 +24,4 @@ export const queryClient = new QueryClient({
   },
 });
 
-export { default as api } from './api';
 export * as stockService from './stock';

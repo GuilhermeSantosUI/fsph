@@ -11,7 +11,7 @@ export default function SignIn() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const onSubmit = async () => {
+  async function onSubmit() {
     try {
       setLoading(true);
       router.replace('/(tabs)');
@@ -22,18 +22,19 @@ export default function SignIn() {
     } finally {
       setLoading(false);
     }
-  };
+  }
 
-  const onGoogle = async () => {
+  async function onGoogle() {
     try {
       setLoading(true);
       await signInWithGoogle();
     } catch (e: any) {
       Alert.alert('Erro Google', e.message);
+      console.log('Erro Google SignIn:', e);
     } finally {
       setLoading(false);
     }
-  };
+  }
 
   return (
     <ScreenTemplate className="flex-1 bg-white p-6">
@@ -89,11 +90,6 @@ export default function SignIn() {
           </Link>
           <Link href="/sign-up" className="text-gray-700">
             Criar conta
-          </Link>
-        </View>
-        <View className="mt-4 items-center">
-          <Link href="/otp" className="text-gray-700">
-            Entrar com código (OTP)
           </Link>
         </View>
       </View>

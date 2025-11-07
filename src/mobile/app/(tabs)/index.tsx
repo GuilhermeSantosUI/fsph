@@ -19,9 +19,9 @@ import SocialImg from '../../assets/images/social.png';
 import SupportImg from '../../assets/images/support.png';
 import AddToWalletModal from '../../components/add-to-wallet-modal';
 import AppHeader from '../../components/app-header';
+import { BloodStocks } from '../components/blood-stock-card';
+import { MenuButton } from '../components/menu-button';
 import RankingModal from '../ranking/ranking-modal';
-import { BloodStocks } from './components/blood-stock-card';
-import { MenuButton } from './components/menu-button';
 
 export default function HomeScreen() {
   const router = useRouter();

@@ -1,7 +1,7 @@
-import api from '../api';
+import { fsphApi } from '../';
 
 export async function getStock() {
-  const { data } = await api.get('/apiinterface/estoque');
+  const { data } = await fsphApi.get('/apiinterface/estoque');
   return data;
 }
 

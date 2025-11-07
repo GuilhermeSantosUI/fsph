@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { ActivityIndicator, Text, View } from 'react-native';
 
-import { stockService } from '../../../services/stock';
+import { stockService } from '../../services/stock';
 
 type Stock = {
   grupoabo: string;
@@ -38,7 +38,6 @@ export function BloodStocks() {
     queryKey: ['stock'],
     queryFn: async () => {
       const { data }: any = await stockService.getStock();
-      console.log('res', data);
       return data;
     },
   });
