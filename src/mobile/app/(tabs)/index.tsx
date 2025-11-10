@@ -191,12 +191,6 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        <TouchableOpacity className="mt-5 bg-gray-100 p-3 rounded-lg">
-          <Text className="text-center text-[#e11d48] font-outfit">
-            Limpar bloodDonationModalSeen
-          </Text>
-        </TouchableOpacity>
-
         <AddToWalletModal
           visible={walletModalVisible}
           onClose={handleCloseWalletModal}
