@@ -1,4 +1,5 @@
 import Badge from '@/components/badge';
+import { useRouter } from 'expo-router';
 import {
   CaretRightIcon,
   FileTextIcon,
@@ -13,6 +14,7 @@ import { StatusBar, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function ProfileScreen() {
+  const router = useRouter();
   return (
     <SafeAreaView className="flex-1 bg-white px-6">
       <StatusBar
@@ -52,17 +54,34 @@ export default function ProfileScreen() {
 
       <View className="mt-4">
         {[
-          { label: 'Configurações da conta', Icon: GearIcon },
-          { label: 'Privacidade', Icon: HandPalmIcon },
-          { label: 'Receber ajuda', Icon: QuestionIcon },
-          { label: 'Indicar para um amigo', Icon: UsersIcon },
-          { label: 'Juridico', Icon: FileTextIcon },
-          { label: 'Sair da conta', Icon: SignOutIcon },
+          {
+            label: 'Configurações da conta',
+            Icon: GearIcon,
+            route: '/(profile)/settings',
+          },
+          {
+            label: 'Privacidade',
+            Icon: HandPalmIcon,
+            route: '/(profile)/privacy',
+          },
+          { label: 'Receber ajuda', Icon: QuestionIcon, route: '/(profile)/help' },
+          {
+            label: 'Indicar para um amigo',
+            Icon: UsersIcon,
+            route: '/(profile)/refer',
+          },
+          { label: 'Juridico', Icon: FileTextIcon, route: '/(profile)/legal' },
+          {
+            label: 'Sair da conta',
+            Icon: SignOutIcon,
+            route: '/(profile)/sign-out-confirm',
+          },
         ].map((item) => (
           <TouchableOpacity
             key={item.label}
             className="flex-row items-center justify-between py-5"
             activeOpacity={0.7}
+            onPress={() => router.push(item.route as any)}
           >
             <View className="flex-row items-center">
               {item.Icon ? (

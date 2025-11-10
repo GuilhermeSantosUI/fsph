@@ -22,11 +22,11 @@ export default function AppointmentTypeScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
-      <ScrollView className="flex-1">
+    <SafeAreaView className="bg-white">
+      <ScrollView className="px-6">
         <AppHeader title="Agendamento" onBack={() => router.back()} />
 
-        <View className="flex-1 px-6 py-8">
+        <View className="flex-1 py-8">
           <Text className="text-[28px] font-semibold text-black mb-4 font-outfit leading-9">
             Tipo de Agendamento
           </Text>
