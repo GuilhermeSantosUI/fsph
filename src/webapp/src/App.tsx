@@ -1,15 +1,10 @@
-import { Sidebar } from "./views/components/sidebar";
-import { Header } from "./views/components/header";
-import { CampaignsPage } from "./views/pages/campaigns";
+import { BrowserRouter } from 'react-router-dom';
+import { HomePage } from './views/pages/homepage';
 
 export function App() {
   return (
-    <div className="flex h-screen overflow-hidden">
-      <Sidebar />
-      <div className="flex flex-col flex-1">
-        <Header />
-        <CampaignsPage />
-      </div>
-    </div>
+    <BrowserRouter>
+      <HomePage />
+    </BrowserRouter>
   );
 }
