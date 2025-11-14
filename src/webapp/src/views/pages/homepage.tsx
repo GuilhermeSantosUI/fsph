@@ -6,6 +6,19 @@ import {
   SidebarTrigger,
 } from '@/views/components/ui/sidebar';
 
+import { Header } from '@/views/components/header';
+import { Button } from '@/views/components/ui/button';
+import { Input } from '@/views/components/ui/input';
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/views/components/ui/sheet';
+
 import {
   Select,
   SelectContent,
@@ -28,9 +41,7 @@ import 'leaflet/dist/leaflet.css';
 import { useRef, useState } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { MapContainer, Marker, TileLayer } from 'react-leaflet';
-import { Header } from '../components/header';
 import { Badge } from '../components/ui/badge';
-import { Button } from '../components/ui/button';
 
 export function HomePage() {
   const mapRef = useRef<L.Map | null>(null);
@@ -121,6 +132,8 @@ export function HomePage() {
     });
   }
 
+  const [open, setOpen] = useState(false);
+
   function handleSelectLocation(loc: Location) {
     setSelectedId(loc.id);
     const map = mapRef.current;
@@ -162,7 +175,6 @@ export function HomePage() {
             <header className="flex items-center justify-between">
               <div>
                 <div className="flex items-center gap-2">
-                  {/* fonte mais leve para visual mais clean */}
                   <h2 className="text-xl font-medium">Campanhas de doação</h2>
                   <Badge variant="outline">10 campanhas</Badge>
                 </div>
@@ -197,7 +209,171 @@ export function HomePage() {
                   </SelectContent>
                 </Select>
 
-                <Button>Adicionar</Button>
+                <Sheet open={open} onOpenChange={setOpen}>
+                  <SheetTrigger asChild>
+                    <Button variant="default">Adicionar</Button>
+                  </SheetTrigger>
+                  <SheetContent
+                    side="right"
+                    className="overflow-y-auto max-h-screen">
+                    <SheetHeader>
+                      <SheetTitle>Criar nova campanha</SheetTitle>
+                      <SheetDescription>
+                        Preencha os dados abaixo para criar a campanha.
+                      </SheetDescription>
+                    </SheetHeader>
+
+                    <div className="p-4 flex flex-col gap-4">
+                      {/* Nome da campanha */}
+                      <div>
+                        <label className="text-sm font-medium">
+                          Nome da campanha*
+                        </label>
+                        <Input placeholder="Informe o nome da campanha" />
+                      </div>
+
+                      {/* Descrição */}
+                      <div>
+                        <label className="text-sm font-medium">Descrição</label>
+                        <textarea
+                          className="w-full min-h-[100px] rounded-md border p-2 text-sm"
+                          placeholder="Informe os detalhes da campanha"
+                        />
+                      </div>
+
+                      {/* Período da campanha */}
+                      <div className="space-y-3">
+                        <div>
+                          <label className="text-sm font-medium">
+                            Início da campanha*
+                          </label>
+                          <div className="flex gap-2">
+                            <Input type="date" />
+                            <Input type="time" />
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="text-sm font-medium">
+                            Fim da campanha
+                          </label>
+                          <div className="flex gap-2">
+                            <Input type="date" />
+                            <Input type="time" />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Localização */}
+                      <div>
+                        <label className="text-sm font-medium">
+                          Local de coleta*
+                        </label>
+                        <Input placeholder="Nome do edifício de doação" />
+
+                        <div className="grid grid-cols-2 gap-2 mt-2">
+                          <div>
+                            <label className="text-sm font-medium">CEP*</label>
+                            <Input placeholder="00000-000" />
+                          </div>
+                          <div>
+                            <label className="text-sm font-medium">
+                              Número*
+                            </label>
+                            <Input placeholder="Número" />
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-2 mt-2">
+                          <div>
+                            <label className="text-sm font-medium">
+                              Estado*
+                            </label>
+                            <select className="w-full rounded-md border p-2 text-sm">
+                              <option>Selecione um estado</option>
+                            </select>
+                          </div>
+                          <div>
+                            <label className="text-sm font-medium">
+                              Município*
+                            </label>
+                            <select className="w-full rounded-md border p-2 text-sm">
+                              <option>Selecione um município</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Ponto de referência */}
+                      <div>
+                        <label className="text-sm font-medium">
+                          Ponto de referência
+                        </label>
+                        <Input placeholder="Informe um ponto fácil para encontrar o local" />
+                      </div>
+
+                      {/* Tipo de doação */}
+                      <div>
+                        <label className="text-sm font-medium">
+                          Tipo de doação*
+                        </label>
+                        <select className="w-full rounded-md border p-2 text-sm">
+                          <option>Selecione o tipo</option>
+                          <option>Coletiva</option>
+                          <option>Individual</option>
+                          <option>Outro</option>
+                        </select>
+                      </div>
+
+                      {/* Responsável */}
+                      <div>
+                        <label className="text-sm font-medium">
+                          Responsável pela campanha*
+                        </label>
+                        <Input placeholder="Informe os dados do responsável" />
+                      </div>
+
+                      {/* Contato */}
+                      <div className="grid grid-cols-2 gap-2">
+                        <div>
+                          <label className="text-sm font-medium">
+                            Telefone*
+                          </label>
+                          <Input placeholder="(00) 00000-0000" />
+                        </div>
+                        <div>
+                          <label className="text-sm font-medium">Email*</label>
+                          <Input placeholder="email@exemplo.com" />
+                        </div>
+                      </div>
+
+                      {/* Status */}
+                      <div>
+                        <label className="text-sm font-medium">
+                          Status da campanha*
+                        </label>
+                        <select className="w-full rounded-md border p-2 text-sm">
+                          <option>Selecione o status</option>
+                          <option>Disponível</option>
+                          <option>Fechada</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <SheetFooter className="mt-6">
+                      <div className="flex justify-end gap-2 w-full">
+                        <Button
+                          variant="outline"
+                          onClick={() => setOpen(false)}>
+                          Cancelar
+                        </Button>
+                        <Button onClick={() => setOpen(false)}>
+                          Salvar informações
+                        </Button>
+                      </div>
+                    </SheetFooter>
+                  </SheetContent>
+                </Sheet>
               </div>
             </header>
 

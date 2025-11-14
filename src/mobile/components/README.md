@@ -8,11 +8,7 @@ Uso rápido:
 import ScreenTemplate from '../components/ScreenTemplate';
 
 export default function MyScreen() {
-  return (
-    <ScreenTemplate className="flex-1 bg-white p-6">
-      {/* seu conteúdo aqui */}
-    </ScreenTemplate>
-  );
+  return <ScreenTemplate className="flex-1 bg-white p-6"></ScreenTemplate>;
 }
 ```
 

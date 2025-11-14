@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { PanelLeftIcon } from 'lucide-react';
@@ -208,7 +209,6 @@ function Sidebar({
       data-variant={variant}
       data-side={side}
       data-slot="sidebar">
-      {/* This is what handles the sidebar gap on desktop */}
       <div
         data-slot="sidebar-gap"
         className={cn(

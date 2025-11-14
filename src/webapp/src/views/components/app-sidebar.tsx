@@ -29,12 +29,12 @@ const data = {
   projects: [
     {
       name: 'Campanhas',
-      url: '#',
+      url: '/',
       icon: Frame,
     },
     {
       name: 'Comunidade (Moderação)',
-      url: '#',
+      url: '/community',
       icon: PieChart,
     },
   ],
