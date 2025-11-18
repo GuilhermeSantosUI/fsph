@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import { DropIcon } from 'phosphor-react-native';
@@ -19,6 +20,8 @@ import SocialImg from '../../assets/images/social.png';
 import SupportImg from '../../assets/images/support.png';
 import AddToWalletModal from '../../components/add-to-wallet-modal';
 import AppHeader from '../../components/app-header';
+import DonationDetailsModal from '../../components/donation-details-modal';
+import DonationHistory from '../../components/donation-history';
 import { BloodStocks } from '../components/blood-stock-card';
 import { MenuButton } from '../components/menu-button';
 import RankingModal from '../ranking/ranking-modal';
@@ -27,6 +30,11 @@ export default function HomeScreen() {
   const router = useRouter();
   const [walletModalVisible, setWalletModalVisible] = useState(false);
   const [rankingModalVisible, setRankingModalVisible] = useState(false);
+  const [detailsModalVisible, setDetailsModalVisible] = useState(false);
+  const [selectedDateLabel, setSelectedDateLabel] = useState<
+    string | undefined
+  >(undefined);
+  const [selectedItems, setSelectedItems] = useState<any[]>([]);
 
   function handleOpenWalletModal() {
     setWalletModalVisible(true);
@@ -170,26 +178,59 @@ export default function HomeScreen() {
           <DropIcon size={20} color="#e11d48" />
         </View>
 
-        <View className="w-full mb-2">
-          <Text className="text-[16px] text-[#A0A0A0] mb-6 font-dmsans">
-            Segunda-Feira 07/04/2025
-          </Text>
+        {/* Donation history: lista completa de doações agrupada por dia */}
+        <DonationHistory
+          donations={[
+            {
+              id: 'd1',
+              datetime: '2025-04-07T19:49:00',
+              time: '19:49',
+              place: 'E.M.E.F. José Conrado de Araújo',
+              address:
+                'Rua Senador Rollemberg, 396 - São José, Aracaju - SE, 49015-120 · Escola de ensino fundamental',
+              distance: '800,0 m',
+            },
+            {
+              id: 'd2',
+              datetime: '2025-03-10T10:20:00',
+              time: '10:20',
+              place: 'Hospital Central',
+              address: 'Av. Principal, 123 - Centro, Aracaju - SE',
+              distance: '2,4 km',
+            },
+            {
+              id: 'd3',
+              datetime: '2025-04-07T09:15:00',
+              time: '09:15',
+              place: 'Clínica Santa Maria',
+              address: 'Rua das Flores, 50 - Bairro Alegre',
+              distance: '1,2 km',
+            },
+          ]}
+          onSelectDay={(dateLabel, items) => {
+            setSelectedDateLabel(dateLabel);
+            setSelectedItems(items);
+            setDetailsModalVisible(true);
+          }}
+        />
 
-          <View className="ml-3">
-            <View className="flex-row items-center justify-between mb-2">
-              <Text className="text-[18px] text-black font-outfit">
-                E.M.E.F. José Conrado de Araújo
-              </Text>
-              <Text className="text-[16px] text-[#A0A0A0] font-dmsans">
-                19:49
-              </Text>
-            </View>
-            <Text className="text-[16px] text-[#E11D48] mt-1 font-dmsans">
-              Rua Senador Rollemberg, 396 - São José, Aracaju - SE, 49015-120 ·
-              Escola de ensino fundamental · 800,0 m
-            </Text>
-          </View>
-        </View>
+        <DonationDetailsModal
+          visible={detailsModalVisible}
+          onClose={() => setDetailsModalVisible(false)}
+          dateLabel={selectedDateLabel}
+          items={selectedItems}
+        />
+
+        <TouchableOpacity className="mt-5 bg-gray-100 p-3 rounded-lg">
+          <Text
+            className="text-center text-[#e11d48] font-outfit"
+            onPress={async () => {
+              await AsyncStorage.removeItem('bloodDonationModalSeen');
+            }}
+          >
+            Limpar bloodDonationModalSeen
+          </Text>
+        </TouchableOpacity>
 
         <AddToWalletModal
           visible={walletModalVisible}

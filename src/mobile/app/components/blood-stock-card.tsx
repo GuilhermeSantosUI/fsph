@@ -1,5 +1,9 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useQuery } from '@tanstack/react-query';
+import React, { useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, Text, View } from 'react-native';
+
+import BloodAppealModal from '../ranking/blood-appeal-modal';
 
 import { stockService } from '../../services/stock';
 
@@ -12,7 +16,11 @@ type Stock = {
 };
 
 function getSituationColor(situacao: string) {
-  switch (situacao?.toLowerCase()) {
+  const norm = String(situacao ?? '')
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+    .toLowerCase();
+  switch (norm) {
     case 'critico':
       return '#e11d48';
     case 'alerta':
@@ -30,6 +38,15 @@ function formatSign(fatorrh: string) {
 }
 
 export function BloodStocks() {
+  const [appealVisible, setAppealVisible] = useState(false);
+  const [appealBloodType, setAppealBloodType] = useState<string | undefined>(
+    undefined
+  );
+  const [appealSeverity, setAppealSeverity] = useState<'normal' | 'critical'>(
+    'critical'
+  );
+  // Considerar que o usuário atual tem tipo sanguíneo A+
+  const userBloodType = 'A+';
   const {
     data: stocks,
     isLoading,
@@ -41,6 +58,49 @@ export function BloodStocks() {
       return data;
     },
   });
+
+  const list: Stock[] = useMemo(() => (stocks ?? []) as Stock[], [stocks]);
+
+  useEffect(() => {
+    // ao carregar os estoques, abrir modal se houver situação crítica e usuário ainda não viu
+    (async () => {
+      try {
+        const seen = await AsyncStorage.getItem('bloodDonationModalSeen');
+        console.log('[BloodStocks] bloodDonationModalSeen =', seen);
+        if (seen) return;
+
+        // Procurar captação crítica DO TIPO do usuário (ex: A+)
+        const critical = list.find((s) => {
+          const norm = String(s.situacao ?? '')
+            .normalize('NFD')
+            .replace(/\p{Diacritic}/gu, '')
+            .toLowerCase();
+          const label = `${s.grupoabo}${formatSign(s.fatorrh)}`;
+          return norm === 'critico' && label === userBloodType;
+        });
+
+        if (critical) {
+          const label = `${critical.grupoabo}${formatSign(critical.fatorrh)}`;
+          console.log(
+            '[BloodStocks] captação crítica PARA O USUÁRIO detectada:',
+            label,
+            critical
+          );
+          setAppealBloodType(label);
+          setAppealSeverity('critical');
+          setAppealVisible(true);
+          // marca como visto para não inundar o usuário
+          await AsyncStorage.setItem('bloodDonationModalSeen', 'true');
+        } else {
+          console.log(
+            '[BloodStocks] nenhuma captação crítica encontrada para o tipo do usuário (A+)'
+          );
+        }
+      } catch {
+        // ignore
+      }
+    })();
+  }, [list]);
 
   if (isLoading) {
     return (
@@ -68,8 +128,6 @@ export function BloodStocks() {
       </View>
     );
   }
-
-  const list: Stock[] = (stocks ?? []) as Stock[];
 
   return (
     <View className="py-4">
@@ -117,6 +175,14 @@ export function BloodStocks() {
           );
         })}
       </View>
+
+      <BloodAppealModal
+        visible={appealVisible}
+        bloodType={appealBloodType}
+        severity={appealSeverity}
+        onClose={() => setAppealVisible(false)}
+        onSchedule={() => setAppealVisible(false)}
+      />
     </View>
   );
 }

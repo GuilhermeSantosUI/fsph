@@ -36,7 +36,6 @@ export default function AppHeader({
         <View>{rightElement}</View>
       ) : (
         <View className="w-8 h-8 opacity-0">
-          {/* placeholder to keep header centered */}
           <CaretLeftIcon size={18} />
         </View>
       )}
