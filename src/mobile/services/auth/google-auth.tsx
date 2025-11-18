@@ -31,18 +31,23 @@ export async function googleAuth() {
       const [, query] = incoming.split('?');
       const params = new URLSearchParams(query || '');
 
+      // prefer structured user payload when present
+      const token = params.get('token') ?? undefined;
+
       if (params.has('user')) {
         const raw = params.get('user') || '';
         try {
           const user = JSON.parse(decodeURIComponent(raw));
-          return { user };
+          return { user, token };
         } catch {
-          return { user: raw };
+          return { user: raw, token };
         }
       }
 
       const obj: Record<string, string> = {};
       params.forEach((v, k) => (obj[k] = v));
+      // ensure token is included if present
+      if (token) obj.token = token;
       return obj;
     }
 

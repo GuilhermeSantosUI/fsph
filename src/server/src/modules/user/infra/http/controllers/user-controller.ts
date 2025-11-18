@@ -77,8 +77,19 @@ export async function googleAuthHandler(
 
     const user = await authService.authenticate(userInfo);
 
+    // generate a server-signed token for the user
+    let jwtToken: string | null = null;
+    try {
+      jwtToken = authService.generateToken(user);
+    } catch (err) {
+      console.error('Failed to generate JWT:', (err as any)?.message ?? err);
+    }
+
     const payload = encodeURIComponent(JSON.stringify(user));
-    const redirectTo = `mobile://auth/callback?user=${payload}`;
+    // include token as a separate query param; client will decode and store it
+    const redirectTo = `mobile://auth/callback?user=${payload}${
+      jwtToken ? `&token=${encodeURIComponent(jwtToken)}` : ''
+    }`;
 
     reply.redirect(redirectTo);
   } catch (error: any) {
