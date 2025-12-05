@@ -36,7 +36,8 @@
             "DEFAULT"
           ]
         }
-      ]
+      ],
+      "package": "com.guilhermesantosui.mobile"
     },
     "web": {
       "output": "static",
@@ -65,7 +66,11 @@
     },
     "extra": {
       "supabaseUrl": "${EXPO_PUBLIC_SUPABASE_URL}",
-      "supabaseAnonKey": "${EXPO_PUBLIC_SUPABASE_ANON_KEY}"
+      "supabaseAnonKey": "${EXPO_PUBLIC_SUPABASE_ANON_KEY}",
+      "router": {},
+      "eas": {
+        "projectId": "e8b6f18e-dbe6-47b8-9747-95ace9d6920d"
+      }
     }
   }
 }
