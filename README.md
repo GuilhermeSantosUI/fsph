@@ -1,52 +1,155 @@
-# Welcome to your Expo app 👋
+## 1 - Passo a Passo para execução do MVP
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Este passo a passo descreve, de forma completa, como configurar e executar localmente os três projetos: `server`, `webapp` e `mobile`.
 
-## Get started
+Pré-requisitos (macOS, shell `zsh`):
 
-1. Install dependencies
+- Node.js (recomendo LTS 18.x ou 20.x)
+- npm (vem com o Node)
+- git
+- Para mobile: Expo (pode usar `npx expo`) e, se necessário, Android Studio / Xcode para emuladores
+- JDK (para builds Android quando usar `expo run:android`)
 
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+1. Clonar o repositório
 
 ```bash
-npm run reset-project
+cd ~/onde/voce/guarda/projetos
+git clone https://github.com/GuilhermeSantosUI/fsph.git
+cd fsph
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+2. Server (API)
 
-## Learn more
+- Diretório: `src/server`
+- O projeto usa Fastify, Prisma e SQLite por padrão. Porta padrão: `3000`.
 
-To learn more about developing your project with Expo, look at the following resources:
+- Variáveis de ambiente (crie `src/server/.env`):
+  - `JWT_SECRET` — segredo para tokens JWT
+  - `GOOGLE_CLIENT_ID` — (opcional) OAuth Google
+  - `GOOGLE_CLIENT_SECRET` — (opcional) OAuth Google
+  - `NODE_ENV` — `development` (opcional)
+  - `VITE_FPSH_API_URL` — (opcional) URL do serviço externo FPSH
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Exemplo `src/server/.env`:
 
-## Join the community
+```
+JWT_SECRET=dev-secret
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+NODE_ENV=development
+VITE_FPSH_API_URL=https://api.exemplo-fpsh.com
+```
 
-Join our community of developers creating universal apps.
+- Instalar e preparar Prisma:
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```bash
+cd src/server
+npm install
+# gerar Prisma Client
+npx prisma generate --schema=prisma/schema.prisma
+# criar migration e banco SQLite (dev.db)
+npx prisma migrate dev --name init --schema=prisma/schema.prisma
+```
 
-# fsph
+- Rodar em desenvolvimento:
+
+```bash
+npm run dev
+```
+
+O servidor estará em `http://localhost:3000`. A documentação Swagger fica em `http://localhost:3000/docs`.
+
+3. Web (frontend)
+
+- Diretório: `src/webapp`
+- Variáveis de ambiente (arquivo `src/webapp/.env`):
+  - `VITE_API_URL` — URL da API (ex: `http://localhost:3000`)
+  - `VITE_GOOGLE_KEY` — (opcional)
+
+Exemplo `src/webapp/.env`:
+
+```
+VITE_API_URL=http://localhost:3000
+VITE_GOOGLE_KEY=your-google-key
+```
+
+- Instalar e rodar:
+
+```bash
+cd src/webapp
+npm install
+npm run dev
+```
+
+O Vite mostrará a URL local (por exemplo `http://localhost:5173`). Para build de produção:
+
+```bash
+npm run build
+npm run preview
+```
+
+4. Mobile (Expo)
+
+- Diretório: `src/mobile`
+- O app usa Supabase para autenticação (email/password, OTP e Google OAuth).
+
+- Variáveis de ambiente (crie `src/mobile/.env` ou `.env.local`):
+  - `EXPO_PUBLIC_SUPABASE_URL` — URL do projeto Supabase
+  - `EXPO_PUBLIC_SUPABASE_ANON_KEY` — anon/public key do Supabase
+
+Exemplo `src/mobile/.env`:
+
+```
+EXPO_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
+EXPO_PUBLIC_SUPABASE_ANON_KEY=YOUR_ANON_KEY
+```
+
+- Verifique `src/mobile/app.json` para garantir que existe `scheme: "mobile"` (necessário para redirect OAuth `mobile://auth/callback`).
+
+- Instalar e rodar:
+
+```bash
+cd src/mobile
+npm install
+npm start          # inicia Metro / Expo
+# ou para Android/iOS (emulador ou dispositivo configurado)
+npm run android
+npm run ios
+```
+
+Observações: para testar autenticação com Google no mobile, adicione `mobile://auth/callback` em Redirect URLs no painel do Supabase e no console do Google Cloud (OAuth Client).
+
+5. Teste de integração local (fluxo sugerido)
+
+- Inicie o server:
+
+```bash
+cd src/server
+npm run dev
+```
+
+- Ajuste `src/webapp/.env` para `VITE_API_URL=http://localhost:3000` e rode o web:
+
+```bash
+cd src/webapp
+npm run dev
+```
+
+- Rode o mobile em outro terminal:
+
+```bash
+cd src/mobile
+npm start
+```
+
+6. Deploy (resumo rápido)
+
+- Server: para produção, prefira Postgres — atualize `prisma/schema.prisma` e use `DATABASE_URL` em `.env`. Use PM2, Docker ou provider Cloud.
+- Web: build (`npm run build`) e hospede em Vercel/Netlify/S3+CloudFront.
+- Mobile: use EAS/Expo para builds nativas e publique nas lojas.
+
+7. Problemas comuns e soluções rápidas
+
+- Erro Prisma: rode `npx prisma generate` e `npx prisma migrate dev`.
+- Porta em uso: ajuste porta em `src/server/src/shared/infra/http/server.ts`.
+- Erros com `expo run:android`: verifique Android Studio, SDK, `JAVA_HOME` e emulador.
